@@ -4,6 +4,7 @@ import basics.tech.moviecatalogservice.model.CatalogItem;
 import basics.tech.moviecatalogservice.model.Movie;
 import basics.tech.moviecatalogservice.model.Rating;
 import basics.tech.moviecatalogservice.model.UserRating;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class MovieCatalogController {
     WebClient.Builder webClientBuilder = WebClient.builder();
 
     @RequestMapping("/{userId}")
+    @HystrixCommand(fallbackMethod = "getFallbackCatalog")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
 
 
@@ -41,6 +43,10 @@ public class MovieCatalogController {
 
         ).collect(Collectors.toList());
        // return Collections.singletonList(new CatalogItem("The Promise","I like this",4));
+    }
+
+    public List<CatalogItem> getFallbackCatalog(@PathVariable("userId") String userId) {
+        return Arrays.asList(new CatalogItem("No movie", "", 0));
     }
 }
 
