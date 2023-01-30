@@ -6,8 +6,20 @@ public class UserRating {
 
     private List<Rating> userRating;
 
-    public UserRating(List<Rating> userRating) {
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    private String userId;
+
+    public UserRating(List<Rating> userRating,String userId) {
+
         this.userRating = userRating;
+        this.userId = userId;
     }
 
     public UserRating() {
